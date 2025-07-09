@@ -1,0 +1,7 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  position: relative;
+  background: #2b8cf3;
+  background: linear-gradient(126deg, rgba(43, 140, 243, 1) 0%, rgba(15, 95, 237, 1) 100%);;
+  min-height: 100vh;
+}

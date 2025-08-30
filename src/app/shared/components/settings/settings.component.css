@@ -1,0 +1,179 @@
+.settings-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 23px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  color: #196EF0;
+  font-family: inherit;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 1px 6px #f2c69c5e;
+  transition: 0.35s;
+}
+button:hover {
+  padding: 0.75rem 2.2rem;
+}
+.settings-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+.title {
+  font-size: 24px;
+  color: #f47c26;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.settings-group {
+  margin-bottom: 20px;
+}
+.settings-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #196EF0;
+  font-weight: 500;
+}
+.change-password-title {
+  margin-bottom: 20px;
+}
+.password-input-container {
+  margin-top: 20px;
+}
+.settings-input {
+  width: 90%;
+  padding: 12px 15px;
+  border: 2px solid #bedafb;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #196EF0;
+  background-color: rgba(222, 234, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: #196EF0;
+  box-shadow: 0 0 0 3px rgba(25, 110, 240, 0.1);
+}
+
+.settings-container > div:not(:last-child):not(
+  :nth-last-child(2)) button {
+  background-color: #f0f6ff;
+  color: #196EF0;
+}
+.settings-container > div:not(:last-child):not(:nth-last-child(2)) button:hover {
+  background-color: #bedafb;
+}
+.cancel-button {
+  background-color: #faf8f8;
+  color: #6c757d;
+  margin-right: 10px;
+  outline: none;
+}
+
+.cancel-button:hover {background-color: #e9ecef;}
+.delete-button {
+  background-color: #f8d7da;
+  color: #a12834;
+}
+.confirm-button {
+  background: linear-gradient(164deg, #e18f42 0%, #c06e2d 100%);
+  color: #fff;
+  font-weight: bold;
+}
+.language-selector {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #bedafb;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #196EF0;
+  background-color: rgba(222, 234, 255, 0.3);
+}
+.settings-actions{  
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+}
+.confirm-delete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 23px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  color: #196EF0;
+  text-align: center;
+}
+.confirm-delete h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #f47c26;
+}
+.confirm-delete p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #6c757d;
+}
+.confirm-delete-button {
+  background-color: #f8d7da;
+  color: #a12834;
+  font-weight: bold;
+  transition: transform 0.14s;
+}
+.change-password {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 23px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  color: #196EF0;
+  text-align: center;
+}
+.change-password input {
+  margin-bottom: 10px;
+}
+
+
+.password-input-container input {
+  position: relative;
+}
+.password-input-container button {
+  position: absolute;
+  width: 40px;
+  right: 36px;
+  margin-top: 2px;
+}
+
+.toggle-password {
+  background-color: #196EF0;
+  text-align: center;
+}

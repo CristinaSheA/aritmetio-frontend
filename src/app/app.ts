@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ChartModule } from 'primeng/chart';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ChartModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

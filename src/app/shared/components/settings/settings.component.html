@@ -1,0 +1,78 @@
+@if(!showConfirmDelete && !showChangePassword) {
+<div class="settings-container">
+  <div class="settings-header">
+    <h2 class="title">Ajustes</h2>
+  </div>
+  <div class="settings-group">
+    <label>Número de ejercicios:</label>
+    <input type="number" min="5" max="20" value="10" class="settings-input" />
+  </div>
+  <div class="settings-group">
+    <label>Idioma</label>
+    <select class="language-selector">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+  <div class="settings-group">
+    <button class="settings-button" (click)="toggleChangePassword()">
+      Cambiar contraseña
+    </button>
+  </div>
+  <div class="settings-group">
+    <button
+      class="settings-button delete-button"
+      (click)="toggleConfirmDeletePopup()"
+    >
+      Eliminar cuenta
+    </button>
+  </div>
+  <div class="settings-actions">
+    <button class="cancel-button" (click)="hideSettings()">Cancelar</button>
+    <button class="confirm-button">Confirmar</button>
+  </div>
+</div>
+} @if(showConfirmDelete) {
+<div class="confirm-delete">
+  <h3>¿Estás seguro de que quieres eliminar tu cuenta?</h3>
+  <p>Esta acción es irreversible y eliminará todos tus datos.</p>
+  <div class="settings-actions">
+    <button class="cancel-button" (click)="hideAllPopUps()">Cancelar</button>
+    <button class="confirm-delete-button" (click)="deleteUser()">
+      Eliminar
+    </button>
+  </div>
+</div>
+} @if(showChangePassword) {
+<form class="change-password" [formGroup]="passwordForm">
+  <h2 class="title change-password-title">Cambiar contraseña</h2>
+
+  <input
+    type="password"
+    placeholder="Contraseña actual"
+    class="settings-input"
+    formControlName="currentPassword"
+  />
+  <input
+    type="password"
+    placeholder="Nueva contraseña"
+    class="settings-input"
+    formControlName="newPassword"
+  />
+  <input
+    type="password"
+    placeholder="Confirmar nueva contraseña"
+    class="settings-input"
+    formControlName="newPasswordCheck"
+  />
+
+  <div class="settings-actions">
+    <button class="cancel-button" type="button" (click)="hideAllPopUps()">
+      Cancelar
+    </button>
+    <button class="confirm-button" type="button" (click)="changePassword()">
+      Cambiar contraseña
+    </button>
+  </div>
+</form>
+}

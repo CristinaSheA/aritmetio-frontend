@@ -1,0 +1,99 @@
+<img
+  src="/img/planets/planet-3-page1.png"
+  alt=""
+  class="decoration decoration__planet--right"
+/>
+<img
+  src="/img/planets/planet-1-page1.png"
+  alt=""
+  class="decoration decoration__planet--left"
+/>
+<img
+  src="/img/backgrounds/rocket-background.png"
+  alt=""
+  class="decoration decoration__rocket"
+/>
+
+<div class="auth">
+  <img
+    src="/img/characters/astronaut-page1.png"
+    alt=""
+    class="auth__astronaut"
+  />
+  <div class="auth__container">
+    <form class="auth__form" [formGroup]="form">
+      <img
+        src="/img/planets/planet-2-page1.png"
+        alt=""
+        class="decoration decoration__planet-3"
+      />
+      <img
+        src="/img/ui/shield.png"
+        alt=""
+        class="decoration decoration__shield"
+      />
+      <h1 class="auth__title">Aritmetio</h1>
+      <p class="auth__subtitle">¡Explora el espacio de las matemáticas!</p>
+
+      <div class="auth__tabs">
+        <button
+          class="auth__tab auth__tab--active"
+          (click)="changeAuthMode('sign-up')"
+          [ngStyle]="{'border-bottom':(authMode === 'sign-up') ? '2px solid #f47c26' : 'none' }"
+        >
+          Nuevo piloto
+        </button>
+        <button class="auth__tab" (click)="changeAuthMode('log-in')"
+        [ngStyle]="{'border-bottom':(authMode === 'log-in') ? '2px solid #f47c26' : 'none' }">
+          Entrar
+        </button>
+      </div>
+
+      <div class="auth__inputs">
+        <div class="auth__input-group">
+          <input
+            type="text"
+            placeholder="Usuario"
+            class="auth__input"
+            formControlName="username"
+          />
+        </div>
+        <div class="auth__input-group">
+          <input
+            type="password"
+            placeholder="Contraseña"
+            class="auth__input"
+            formControlName="password"
+          />
+        </div>
+        @if(authMode !== "log-in") {
+        <div class="auth__input-group auth__input-group--hidden">
+          <input
+            type="password"
+            placeholder="Repite la contraseña"
+            class="auth__input"
+            formControlName="passwordCheck"
+          />
+        </div>
+        }
+      </div>
+      @if(authMode === "log-in") {
+      <button
+        type="submit"
+        class="auth__button"
+        (click)="loginUser()"
+      >
+        Iniciar sesión
+      </button>
+      } @else {
+      <button
+        type="submit"
+        class="auth__button"
+        (click)="createUser()"
+      >
+        ¡Registrarse ahora!
+      </button>
+      }
+    </form>
+  </div>
+</div>

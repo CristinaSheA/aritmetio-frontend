@@ -1,0 +1,24 @@
+<div class="feedback-container">
+  <div class="feedback-header">
+    <h2 class="feedback-title">{{randomMessage}}</h2>
+    <p class="feedback-message">
+      ¡Has completado
+      {{ totalExercises }}
+      ejercicios de @switch (mode) { @case ('addition') {suma} @case
+      ('subtraction') {resta} @case ('multiplication') {multiplicación}
+      @case ('multiplication') {división}}!
+    </p>
+  </div>
+  <div class="feedback-summary">
+    <div class="feedback-item">
+      <span class="feedback-label">Porcentaje de aciertos</span>
+      <span class="feedback-value">{{ successPercentage }}%</span>
+    </div>
+    <div class="feedback-item">
+      <span class="feedback-label">Mejor racha</span>
+      <span class="feedback-value">{{ maxStreak }}</span>
+    </div>
+  </div>
+  <button class="feedback-btn" routerLink="mode-selector" >Jugar de nuevo</button>
+</div>
+

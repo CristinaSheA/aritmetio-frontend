@@ -1,0 +1,112 @@
+<img
+  src="/img/ui/space-gun.png"
+  alt="Arma espacial decorativa"
+  class="decoration decoration--gun"
+/>
+<img
+  src="/img/planets/planet-1-page2.png"
+  alt="Planeta decorativo 1"
+  class="decoration decoration--planet-1"
+/>
+<img
+  src="/img/planets/planet-2-page2.png"
+  alt="Planeta decorativo 2"
+  class="decoration decoration--planet-2"
+/>
+<img
+  src="/img/planets/planet-3-page2.png"
+  alt="Planeta decorativo 3"
+  class="decoration decoration--planet-3"
+/>
+<img
+  src="/img/characters/creature.png"
+  alt="Criatura espacial"
+  class="decoration decoration--creature"
+/>
+
+<main class="game-container">
+  <header class="game-header">
+    <div class="game-brand">
+      <img
+        src="/img/characters/astronaut-page2.png"
+        alt="Logo de Aritmetio"
+        class="game-brand__logo"
+      />
+      <div class="game-brand__text">
+        <h1 class="game-brand__title">Aritmetio</h1>
+        <p class="game-brand__slogan">
+          ¡Explora el espacio de las matemáticas!
+        </p>
+      </div>
+    </div>
+    <nav class="game-actions">
+      <button class="game-actions__button" (click)="toggleSettings()">Ajustes</button>
+      <button class="game-actions__button" (click)="logOut()">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <h2 class="game-subtitle">Elige el modo de juego</h2>
+
+  <div class="game-modes">
+    <div class="game-card">
+      <img
+        src="/img/ui/math-addition.png"
+        alt="Icono de suma"
+        class="game-card__icon"
+      />
+      <h3 class="game-card__title">Sumar</h3>
+      <div class="game-card__example">
+        6 + 2 = <span class="game-card__solution">8</span>
+      </div>
+      <button class="game-card__button" routerLink="/game/addition">Jugar</button>
+    </div>
+
+    <div class="game-card">
+      <img
+        src="/img/ui/math-subtraction.png"
+        alt="Icono de resta"
+        class="game-card__icon"
+      />
+      <h3 class="game-card__title">Restar</h3>
+      <div class="game-card__example">
+        6 - 2 = <span class="game-card__solution">4</span>
+      </div>
+      <button class="game-card__button" routerLink="/game/subtraction">Jugar</button>
+    </div>
+
+    <div class="game-card">
+      <img
+        src="/img/ui/math-multiplication.png"
+        alt="Icono de multiplicación"
+        class="game-card__icon"
+      />
+      <h3 class="game-card__title">Multiplicar</h3>
+      <div class="game-card__example">
+        6 × 2 = <span class="game-card__solution">12</span>
+      </div>
+      <button class="game-card__button" routerLink="/game/multiplication">Jugar</button>
+    </div>
+
+    <div class="game-card">
+      <img
+        src="/img/ui/math-division.png"
+        alt="Icono de división"
+        class="game-card__icon"
+      />
+      <h3 class="game-card__title">Dividir</h3>
+      <div class="game-card__example">
+        6 ÷ 2 = <span class="game-card__solution">3</span>
+      </div>
+      <button class="game-card__button" routerLink="/game/division">Jugar</button>
+    </div>
+  </div>
+</main>
+@if(showSettings) {
+  <div class="overlay">
+    <div class="settings-content">
+      <app-settings></app-settings> 
+    </div>
+  </div>
+}
+
+

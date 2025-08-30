@@ -1,0 +1,265 @@
+:host {
+  display: block;
+}
+.decoration {
+  position: fixed;
+  width: auto;
+  height: auto;
+}
+
+.planet-1 {
+  bottom: 0;
+  right: 0;
+  width: 80%;
+}
+.planet-2 {
+  top: 0;
+  right: 0;
+}
+.planet-3 {
+  top: 10%;
+  left: 20%;
+}
+
+main {
+  border-radius: 23px;
+  position: fixed;
+  top: 45%;
+  right: 40%;
+  transform: translateY(-50%);
+  margin: 0;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  max-height: 493px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+.main-back {
+  z-index: -1;
+  border-radius: 23px;
+
+}
+.head {
+  height: 54px;
+  width: 107px;
+  margin-top: -39px;
+  display: flex;
+  color: white;
+  justify-content: center;
+}
+.head p {
+  font-size: 10px;
+  margin: 0;
+}
+.head h1 {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.introduction img {
+  margin-right: 10px;
+  width: 55px;
+}
+.operation {
+  color: white;
+  text-align: center;
+  margin-bottom: 100px;
+  margin-top: 50px;
+  font-size: 48px;
+}
+.num1, .num2 {
+  text-align: right;
+  margin-right: 10px;
+}
+.sign {
+  top: 18%;
+  position: fixed;
+  font-size: 30px;
+  margin: 0;
+  text-align: left;
+}
+
+.game-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.time-left {
+  margin-left: 30px;
+  border-radius: 15px;
+  background: linear-gradient(126deg, rgba(43, 140, 243, 1) 0%, rgba(15, 95, 237, 1) 100%);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: white;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 30px;
+}
+.time-left p {
+  margin: 0;
+  width: 60px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.seconds-left {
+  margin: 0;
+  font-size: 48px;
+}
+progress {
+  margin-right: 30px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  flex-grow: 1;
+  height: 20px;
+  overflow: hidden;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: #84B4FB;
+  
+}
+
+progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+progress::-webkit-progress-value {
+  background: #5898F6;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+progress::-moz-progress-bar {
+  background: #5898F6;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.division {
+  position: relative;
+  color: white;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  margin-bottom: 100px;
+  margin-top: 50px;
+}
+.column {
+  padding: 10px;
+}
+.dividendo, .divisor, input {
+  font-size: 40px;
+  font-family: monospace;
+}
+.dividendo {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  justify-content: right;
+}
+.dividendo span {
+  width: 50px;
+  display: inline-block;
+  text-align: center;
+}
+.division-inputs {
+  display: flex;
+  justify-content: right;
+  gap: 10px;
+}
+.division input {
+  width: 20px;
+  text-align: center;
+  direction: rtl;
+  border-radius: 20px;
+  border: 0;
+  font-size: 30px;
+  outline: none; 
+  color: #196EF0;
+  margin-top: 15px;
+  padding: 5px 15px;
+}
+.divisor-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.divisor {
+  width: 50px;
+  border-bottom: 4px solid #fff;
+  border-left: 4px solid #fff;
+  text-align: center;
+  margin-bottom: 10px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.solution {
+  direction: rtl;
+  border-radius: 20px;
+  border: 0;
+  font-size: 48px;
+  outline: none; 
+  color: #196EF0;
+  width: 90px;
+  margin-top: 15px;
+  padding: 5px 15px;
+}
+feedback {
+  z-index: 99999;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+}
+label {
+  font-size: 40px;
+  position: absolute;
+  bottom: 10px;
+  right: 43%;
+}
+@media (max-width: 2012px) {
+  .planet-3 {
+    left: 10%;
+  }
+}
+@media (max-width: 1600px) {
+  .planet-3 {
+    left: -5%;
+  }
+  main {
+    right: 30%;
+  }
+}
+@media (max-width: 1024px) {
+  .planet-3 {
+    display: none;
+  }
+  main {
+    right: 20%;
+  }
+  .planet-1 {
+    width: 100%;
+  }
+}
+@media (max-width: 658px) {
+  main {
+    right: 10%;
+  }
+}

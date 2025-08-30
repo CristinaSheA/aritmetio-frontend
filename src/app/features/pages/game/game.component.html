@@ -1,0 +1,75 @@
+<img src="/img/planets/planet-1-page3.png" alt="" class="planet-1 decoration" />
+<img src="/img/planets/planet-2-page3.png" alt="" class="planet-2 decoration" />
+<img src="/img/planets/planet-3-page3.png" alt="" class="planet-3 decoration" />
+<main>
+  <img
+    src="/img/backgrounds/page3-background.png"
+    class="main-back decoration"
+    alt=""
+  />
+  <div class="head">
+    <img src="/img/characters/astronaut-page3.png" alt="" />
+    <div class="text">
+      <h1>aritmetio</h1>
+      <p>¡Explora el espacio de las matemáticas!</p>
+    </div>
+  </div>
+  @if(mode !== 'division') {
+  <div class="operation">
+    <div class="num1">{{ currentExercise.num1 }}</div>
+    <div class="sign">
+      @switch (mode) { @case ('addition') { + } @case ('subtraction') { - }
+      @case ('multiplication') { x } }
+    </div>
+    <div class="num2">{{ currentExercise.num2 }}</div>
+    <input
+      type="number"
+      class="solution"
+      (focusout)="checkSolution($event)"
+      (keydown.enter)="checkSolution($event)"
+    />
+  </div>
+  } @else {
+  <div class="division">
+    <div class="column">
+      <div class="dividendo">
+
+        @for (digit of getDigits(currentExercise.num1); track $index) {
+        <span>{{ digit }}</span>
+        }
+      </div>
+      <div class="division-inputs">
+        <input type="number" [(ngModel)]="solucionResto" (keydown.enter)="checkSolution(solucionResto)"/>
+      </div>
+      <label>/</label>
+    </div>
+    <div class="column divisor-column">
+      <div class="divisor">
+        <span>{{ currentExercise.num2 }}</span>
+      </div>
+      <div class="divisor-input">
+        <input type="number" (keydown.enter)="checkSolution(solucionCociente)
+        " [(ngModel)]="solucionCociente"/>
+        <!--  class="solution" -->
+      </div>
+    </div>
+  </div>
+  }
+
+  <div class="game-info">
+    <div class="time-left">
+      <div class="seconds-left">{{ timeLeft }}</div>
+      <p>tiempo restante</p>
+    </div>
+    <progress value="{{ timeLeft }}">{{ timeLeft }}%</progress>
+  </div>
+</main>
+
+
+@if(showFeedback) {
+  <div class="feedback-overlay overlay">
+    <div class="feedback-content">
+      <feedback [mode]="mode"></feedback>
+    </div>
+  </div>
+}

@@ -1,0 +1,90 @@
+.feedback-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 2.2rem 2.5rem 2rem 2.5rem;
+  max-width: 400px;
+  margin: 3rem auto;
+  text-align: center;
+  color: #fff;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.feedback-header {
+  margin-bottom: 1.2rem;
+}
+
+.feedback-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f47c26;
+  margin: 0 0 0.4rem 0;
+  letter-spacing: 0.5px;
+}
+
+.feedback-message {
+  font-size: 1.07rem;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.feedback-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem 2.7rem;
+  margin: 1.7rem 0;
+}
+
+.feedback-item {
+  background: #bedafb;
+  color: #2583f2;
+  border-radius: 8px;
+  min-width: 130px;
+  padding: 0.8rem 1rem 0.7rem 1rem;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 1.4px 6px #96b3e230;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feedback-label {
+  font-size: 0.92rem;
+  opacity: 0.83;
+  margin-bottom: 0.25rem;
+}
+
+.feedback-value {
+  font-size: 1.38rem;
+  font-weight: bold;
+  color: #2583f2;
+}
+
+.feedback-btn {
+  background: linear-gradient(164deg, #e18f42 0%, #c06e2d 100%);
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.75rem 2.2rem;
+  border-radius: 27px;
+  cursor: pointer;
+  box-shadow: 0 1px 6px #f2c69c5e;
+  transition: transform 0.14s;
+}
+
+.feedback-btn:hover {
+  transform: scale(1.045);
+}
+
+@media (max-width: 550px) {
+  .feedback-container {
+    padding: 1.5rem 0.7rem;
+    max-width: 97vw;
+  }
+  .feedback-summary {
+    gap: 0.8rem 1.1rem;
+  }
+}

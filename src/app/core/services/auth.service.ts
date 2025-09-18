@@ -13,6 +13,7 @@ export class AuthService {
   private readonly wsService = inject(WebsocketsService);
   private readonly http = inject(HttpClient);
   public apiUrl = 'http://localhost:3000/user';
+  
   private readonly router = inject(Router);
   public users: User[] = [];
 

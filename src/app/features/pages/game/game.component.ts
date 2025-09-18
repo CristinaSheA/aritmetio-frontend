@@ -4,13 +4,13 @@ import {
   Component,
   inject,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { WebsocketsService } from '../../../core/services/websockets.service';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { GameService } from '../../../core/services/game.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-game',

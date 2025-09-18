@@ -4,7 +4,7 @@ import { ChartModule } from 'primeng/chart';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ChartModule],
+  imports: [RouterOutlet,],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

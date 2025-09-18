@@ -5,10 +5,12 @@ import { WebsocketsService } from '../../../core/services/websockets.service';
 import { SettingsComponent } from '../../../shared/components/settings/settings.component';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../core/services/settings.service';
+import { StatsComponent } from '../../../shared/components/stats/stats';
+import { StatsService } from '../../../core/services/stats.service';
 
 @Component({
   selector: 'app-mode-selector',
-  imports: [RouterLink, SettingsComponent, FormsModule],
+  imports: [RouterLink, SettingsComponent, FormsModule, StatsComponent],
   templateUrl: './mode-selector.component.html',
   styleUrl: './mode-selector.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,6 +19,7 @@ export class ModeSelectorComponent {
   private readonly wsService = inject(WebsocketsService);
   private readonly authService = inject(AuthService);
   private readonly settingsService = inject(SettingsService);
+  private readonly statsService = inject(StatsService);
 
   public logOut() {
     this.authService.logOut();
@@ -27,6 +30,13 @@ export class ModeSelectorComponent {
   }
   public get showSettings() {
     return this.settingsService.showSettings;
+  }
+  public get showStats() {
+    return this.statsService.showStats;
+  }
+
+  public toggleStats(stats: boolean) {
+    return this.statsService.showStats = stats;
   }
   
 }

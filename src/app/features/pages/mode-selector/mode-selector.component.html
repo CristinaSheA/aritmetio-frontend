@@ -42,6 +42,7 @@
     <nav class="game-actions">
       <button class="game-actions__button" (click)="toggleSettings()">Ajustes</button>
       <button class="game-actions__button" (click)="logOut()">Cerrar sesión</button>
+      <button class="game-actions__button" (click)="toggleStats(true)">Estadísticas</button>
     </nav>
   </header>
 
@@ -109,4 +110,8 @@
   </div>
 }
 
+@if(showStats){
+  <div class="overlay" (click)="toggleStats(false)"></div>
+  <app-stats></app-stats>
+}
 

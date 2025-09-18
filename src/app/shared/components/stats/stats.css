@@ -1,0 +1,141 @@
+:host {
+  display: block;
+  position: absolute;
+  z-index: 99999;
+  transform: translate(75%, 30%);
+}
+
+.dashboard-container {
+  border-radius: 10px;
+  background-color: white;
+
+  padding: 1rem;
+  color: #6c757d;
+
+}
+
+.header {
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  
+  
+}
+h1 {
+  margin: 0;
+  font-size: 30px;
+  color: #f47c26;
+  text-transform: uppercase;
+}
+  
+p {
+  color: #243c60da;
+  margin: 0.5rem 0 0 0;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #f47c26;
+}
+
+.stat-title {
+  font-size: 1rem;
+  color: #5898F6;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.positive-trend { color: #10b981; }
+
+.negative-trend { color: #ef4444; }
+
+.section-title {
+
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #f47c26;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #bedafb55;
+  color: #2583f2;
+}
+.text {
+  margin: 50px 0px;
+  display: flex;
+  justify-content: space-around;
+}
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+.grid {
+  width: 900px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+@media (max-width: 2180px) {
+  :host {
+    transform: translate(70%, 30%);
+  }
+}
+@media (max-width: 1900px) {
+  :host {
+    transform: translate(50%, 30%);
+  }
+}
+@media (max-width: 1670px) {
+  :host {
+    transform: translate(33%, 30%);
+  }
+}
+@media (max-width: 1338px) {
+  :host {
+    transform: translate(20%, 30%);
+  }
+}
+@media (max-width: 1264px) {
+  :host {
+    transform: translate(10%, 30%);
+  }
+}
+@media (max-width: 1062px) {
+  :host {
+    transform: translate(5%, 30%);
+  }
+  .text {
+    flex-wrap: wrap;
+  }
+  .stats {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

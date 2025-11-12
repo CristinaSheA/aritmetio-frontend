@@ -10,12 +10,9 @@ export class WebsocketsService {
   private socket!: Socket;
   private isConnected: boolean = false;
 
-  public connect(): Promise<void> {
+  public connect(id: string, token: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      
-      if (!token || !userId) {
+      if (!token || !id) {
         const error = 'No hay token o usuario';
         console.error(error);
         reject(error);
@@ -25,11 +22,8 @@ export class WebsocketsService {
         this.socket.disconnect();
       }
       this.socket = io(this.uri, {
-        query: {
-          userId: userId,
-          token: token,
-        },
-      });
+        auth: { id, token }, transports: ['websocket']});
+
       this.socket.on('connect', () => {
         console.log('Connected to WebSocket');
         this.isConnected = true;

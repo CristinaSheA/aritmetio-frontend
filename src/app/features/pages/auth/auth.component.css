@@ -124,10 +124,10 @@
   cursor: pointer;
   margin-top: 0.625rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
-.auth__button:hover {
+.auth__button:hover, .google-login:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(225, 143, 66, 0.3);
 }
 
 @media (max-width: 2291px) {
@@ -176,4 +176,15 @@ button, input, .auth__tab {
 button:focus-visible, input:focus-visible {
   outline: 2px solid #f47c26;
   outline-offset: 2px;
+}
+
+.google-login {
+  border: #3c88bb 1px solid;
+  color: #3c88bb;
+  background-color: transparent;
+  width: 100%;
+  padding: 0.5rem 1.5625rem;
+  border-radius: 27px;
+  cursor: pointer;
+  margin-top: 5px;
 }

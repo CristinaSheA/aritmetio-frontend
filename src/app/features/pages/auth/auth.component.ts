@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-auth',
@@ -20,6 +21,8 @@ import { CommonModule } from '@angular/common';
 export class AuthComponent { 
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly oauthService = inject(OAuthService);
+
   public form: FormGroup = this.fb!.group({
     username: ['', [Validators.minLength(3), Validators.required]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
@@ -27,15 +30,25 @@ export class AuthComponent {
   });
   public authMode = 'sign-up';
 
+  ngOnInit() {
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken()) {
+        const claims: any = this.oauthService.getIdentityClaims();
+        console.log("Usuario autenticado:", claims);
+        console.log(claims.name);
+        let randomNum = Math.floor(Math.random() * 10000);
+        let username = claims.name.toLowerCase().split(" ").join("") + randomNum;
+        this.form.get('username')?.setValue(username);
+        console.log(claims.name.toLowerCase().split(" ").join(""));
+        this.authService.createUserGoogle(username, claims.email);
+        console.log();
+      }
+    });
+  }
+
   public changeAuthMode(mode: string) {
-    switch (mode) {
-      case 'log-in':
-        this.authMode = 'log-in';
-        break;
-      case 'sign-up':
-        this.authMode = 'sign-up';
-        break;
-    }
+    if (mode === 'log-in') this.authMode = 'log-in'; 
+    else this.authMode = 'sign-up';
   }
   public createUser() {
     this.authService!.createUser(this.form);
@@ -43,4 +56,8 @@ export class AuthComponent {
   public loginUser() {
     this.authService!.loginUser(this.form);
   }
+  public loginOAuth() {
+    window.location.href = 'http://localhost:3000/auth/google';
+  }
 }
+ 

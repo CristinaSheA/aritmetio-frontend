@@ -33,7 +33,6 @@ export class GameService {
     clearInterval(this.timerInterval);
   }
   public checkSolution(solution: any | number): void {
-    console.log('a');
     let inputValue
     let parsedValue
     let a
@@ -54,42 +53,30 @@ export class GameService {
         this.playSound('./sounds/sucess.mp3');
         return
       }
-      if (a) {
-        solution = null
-      } else {
-        solution.target.value = '';
-      }
+      if (a) solution = null
+      else solution.target.value = '';
       this.playSound('./sounds/pop.mp3');
       this.correctAnswers++;
-      console.log(this.correctAnswers);
-      
       this.currentStreak++;
-      if (this.currentStreak > this.maxStreak) {
-        this.maxStreak = this.currentStreak;
-      }
+      if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
       this.currentExercise = this.exercises.pop();
     } else if (parsedValue !== this.currentExercise.result || inputValue === '') {
-      solution.target.value = '';
       this.playSound('./sounds/error.mp3');
       this.incorrectAnswers++;
-      console.log(this.incorrectAnswers);
       this.currentStreak = 0;
       solution.target.value = '';
       return
     }
   }
   public async getExercises(mode: string): Promise<void> {
-    await this.wsService.connect();
+    const token = localStorage.getItem('userToken');
+    const userId = localStorage.getItem('userId');
+    await this.wsService.connect(userId!, token!);
     this.wsService.emit('startGame', { operationType: mode.toUpperCase() });
     this.wsService
       .on<{ exercises: any[] }>('gameStarted')
       .subscribe((payload) => {
-        
         this.exercises = payload.exercises;
-        console.log('Ejercicios recibidos:', this.exercises);
-        this.currentExercise = this.exercises.pop();
-        console.log('Current Exercise:', this.currentExercise);
-        this.startTimer();
       });
   }
   private playSound(soundPath: string): void {

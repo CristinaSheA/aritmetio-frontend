@@ -51,10 +51,10 @@ export class AuthComponent {
     else this.authMode = 'sign-up';
   }
   public createUser() {
-    this.authService!.createUser(this.form);
+    this.authService!.createUser(this.form, this.authMode);
   }
   public loginUser() {
-    this.authService!.loginUser(this.form);
+    this.authService!.loginUser(this.form, this.authMode);
   }
   public loginOAuth() {
     window.location.href = 'http://localhost:3000/auth/google';

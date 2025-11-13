@@ -65,34 +65,23 @@ export class AuthService {
     localStorage.removeItem('userToken');
     this.router.navigate(['/auth']);
   }
-  public createUser(form: FormGroup) {
+  public createUser(form: FormGroup, authMode: string) {
     const username = form.get('username')!.value;
     const password = form.get('password')!.value;
     const passwordCheck = form.get('passwordCheck')!.value;
     console.log('here');
-    if (!this.checkErrors(username, password, passwordCheck, form)) return
+    if (!this.checkErrors(username, password, passwordCheck, form, authMode)) return
     console.log('here');
     
     this.createQuery(username, password, undefined).subscribe({
       next: (response) => {
-        // Tras login/registro
         let userId = response.user?.id || response.id;
         if (!userId || userId === 'undefined') {
-        console.error('ID de usuario inválido:', userId);
-        return;
+          console.error('ID de usuario inválido:', userId);
+          return;
         }
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('userToken', response.token);
-        console.log(userId);
-        console.log(response.token);
-        
+        this.saveAndRedirect(response.user.id, response.token);
         this.wsService.connect(userId, response.token);
-
-        // console.log('Usuario creado exitosamente', response);
-        // localStorage.setItem('userId', response.id);
-        // localStorage.setItem('userToken', response.token);
-        // this.wsService.connect();
-        this.router.navigate(['/mode-selector']);
       },
       error: (error) => {
         console.error('Error al crear el usuario', error);
@@ -100,7 +89,6 @@ export class AuthService {
         return;
       },
     });
-    this.router.navigate(['/mode-selector']);
   }
   public createUserGoogle(username: string, email: string): void {
     this.createQuery(username, undefined, email).subscribe({
@@ -120,18 +108,14 @@ export class AuthService {
       },
     });
   }
-
-  public loginUser(form: FormGroup): void {
+  public loginUser(form: FormGroup, authMode: string): void {
     const username = form.get('username')!.value;
     const password = form.get('password')!.value;
-    if (!this.checkErrors(username, password, null, form)) return
+    if (!this.checkErrors(username, password, null, form, authMode)) return
 
     this.loginQuery(username, password).subscribe({
       next: (response) => {
-        console.log('Session successfully started', response);
-        localStorage.setItem('userId', response.user.id);
-        localStorage.setItem('userToken', response.token);
-        this.router.navigate(['/mode-selector']);
+        this.saveAndRedirect(response.user.id, response.token);
         this.wsService.connect(response.user.id, response.token);
       },
       error: (error) => {
@@ -139,6 +123,7 @@ export class AuthService {
       },
     });
   }
+
   public async updateUser(user: User): Promise<void> {
     if (!user?.id) {
       throw new Error('Invalid user data');
@@ -165,7 +150,6 @@ export class AuthService {
     localStorage.setItem('isAuthenticated', 'false');
     this.router.navigate(['/auth']);
   }
-
   private createQuery(username: string, password?: string, email?: string): Observable<any> {
     return this.http.post(`${this.apiUrl}`, {
       username,
@@ -183,14 +167,15 @@ export class AuthService {
     username: string,
     password: string,
     passwordCheck: string | null,
-    form: FormGroup
+    form: FormGroup, 
+    authMode: string
   ): boolean {
     const result = this.users.find((user) => user.username === username);
 
-    // if (form.invalid) {
-    //   console.error('Invalid form');
-    //   return false;
-    // }
+    if (form.invalid) {
+      console.error('Invalid form');
+      return false;
+    }
     if (passwordCheck) {
        if (password !== passwordCheck) {
         console.error(
@@ -199,9 +184,11 @@ export class AuthService {
         return false;
       }
     }
-    if (result) {
-      console.error('This user already exists.');
-      return false;
+    if (authMode === 'sign-up') { 
+      if (result) {
+        console.error('This user already exists.');
+        return false;
+      }
     }
     if (username.length < 3) {
       console.error('The username must be at least 3 characters long.');
@@ -213,7 +200,12 @@ export class AuthService {
     }
     return true;
   }
-
+  private saveAndRedirect(id: string, token: string): void {
+    localStorage.setItem('userId', id);
+    localStorage.setItem('userToken', token);
+    localStorage.setItem('isAuthenticated', 'true');
+    this.router.navigate(['/mode-selector']);
+  }
   public loginOAuth() {
     this.oauthService.initLoginFlow(undefined, { prompt: 'select_account' });
   }

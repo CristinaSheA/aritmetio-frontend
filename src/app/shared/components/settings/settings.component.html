@@ -5,7 +5,18 @@
   </div>
   <div class="settings-group">
     <label>Número de ejercicios:</label>
-    <input type="number" min="5" max="20" value="10" class="settings-input" />
+    <select class="exercises-selector" [(ngModel)]="exerciseCount">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+    </select>
   </div>
   <div class="settings-group">
     <label>Idioma</label>
@@ -15,9 +26,27 @@
     </select>
   </div>
   <div class="settings-group">
-    <button class="settings-button" (click)="toggleChangePassword()">
-      Cambiar contraseña
-    </button>
+    <label>Cambiar contraseña</label>
+    <form class="change-password" [formGroup]="passwordForm">
+      <input
+        type="password"
+        placeholder="Contraseña actual"
+        class="settings-input"
+        formControlName="currentPassword"
+      />
+      <input
+        type="password"
+        placeholder="Nueva contraseña"
+        class="settings-input"
+        formControlName="newPassword"
+      />
+      <input
+        type="password"
+        placeholder="Confirmar nueva contraseña"
+        class="settings-input"
+        formControlName="newPasswordCheck"
+      />
+  </form>
   </div>
   <div class="settings-group">
     <button
@@ -29,7 +58,7 @@
   </div>
   <div class="settings-actions">
     <button class="cancel-button" (click)="hideSettings()">Cancelar</button>
-    <button class="confirm-button">Confirmar</button>
+    <button class="confirm-button" (click)="confirmChanges()">Confirmar</button>
   </div>
 </div>
 } @if(showConfirmDelete) {
@@ -43,36 +72,4 @@
     </button>
   </div>
 </div>
-} @if(showChangePassword) {
-<form class="change-password" [formGroup]="passwordForm">
-  <h2 class="title change-password-title">Cambiar contraseña</h2>
-
-  <input
-    type="password"
-    placeholder="Contraseña actual"
-    class="settings-input"
-    formControlName="currentPassword"
-  />
-  <input
-    type="password"
-    placeholder="Nueva contraseña"
-    class="settings-input"
-    formControlName="newPassword"
-  />
-  <input
-    type="password"
-    placeholder="Confirmar nueva contraseña"
-    class="settings-input"
-    formControlName="newPasswordCheck"
-  />
-
-  <div class="settings-actions">
-    <button class="cancel-button" type="button" (click)="hideAllPopUps()">
-      Cancelar
-    </button>
-    <button class="confirm-button" type="button" (click)="changePassword()">
-      Cambiar contraseña
-    </button>
-  </div>
-</form>
 }

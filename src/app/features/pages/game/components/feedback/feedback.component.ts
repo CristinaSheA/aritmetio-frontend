@@ -25,6 +25,18 @@ export class FeedbackComponent {
     '¡Tu constancia es admirable! 🏆🔢',
     '¡Te has superado, ¡qué orgullo! 🥇🎉',
   ]
+  public supportiveMessages: string[] = [
+    '¡Uy, esta vez no salió! 💥💪',
+    '¡Casi! Vamos a intentarlo de nuevo 🔄⭐',
+    '¡Fallaste, pero eso se aprende! 📘✨',
+    '¡Hoy no fue, pero mañana sí! ⏳💡',
+    '¡No lo lograste, sigue adelante! 🚀🔥',
+    '¡Errores hoy, aciertos mañana! 🧠💛',
+    '¡Ups! Esto fue difícil 😅📖',
+    '¡No llegaste al 50%, pero no te rindas! 💪🌟',
+    '¡Hoy fallaste, mañana lo lograrás! 🏆📚',
+    '¡Se puede mejorar! Cada fallo cuenta 💡💥',
+  ]
   public get totalExercises(): number {
   return this.gameService.correctAnswers + this.gameService.incorrectAnswers;
   }
@@ -40,13 +52,23 @@ export class FeedbackComponent {
     return Math.round((this.correctAnswers / total) * 100);
   }
   public get maxStreak(): number {
-    return this.gameService.maxStreak;
+    return this.gameService.maxStreak + 1;
   }
   public get randomMessage(): string {
-    const 
-    index = Math.floor(Math.random() * this.messages.length);
-    return this.messages[index];
+    if (this.successPercentage > 50) {
+      const index = Math.floor(Math.random() * this.messages.length);
+      return this.messages[index];
+    } else {
+      const supportiveIndex = Math.floor(Math.random() * this.supportiveMessages.length);
+      return this.supportiveMessages[supportiveIndex];
+    }
   }
-
+  public redirectMainPage(): void {
+    this.gameService.showFeedback = false;
+    this.gameService.correctAnswers = 0;
+    this.gameService.incorrectAnswers = 0;
+    this.gameService.currentStreak = 0;
+    this.gameService.maxStreak = 0;
+  }
 }
 

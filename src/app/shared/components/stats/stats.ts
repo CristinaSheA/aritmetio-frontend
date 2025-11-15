@@ -12,6 +12,8 @@ import { StatsService } from '../../../core/services/stats.service';
   styleUrl: './stats.css'
 })
 export class StatsComponent {
+
+  
   // data: any;
   // options: any;
   // public readonly statsService = inject(StatsService);

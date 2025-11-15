@@ -8,9 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { GameService } from '../../../core/services/game.service';
-import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-game',
@@ -23,40 +22,39 @@ export class GameComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly gameService = inject(GameService);
-
+  private readonly authService = inject(AuthService);
   public mode!: string;
-  public showFeedback: boolean = false;
-  private timeSub!: Subscription;
   public solucionCociente!: number;
   public solucionResto!: number;
+  public timeLeft$ = this.gameService.timeLeft$;
 
   ngOnInit() {
+    let count
     this.mode = this.route.snapshot.paramMap.get('mode') || '';
-    this.gameService.getExercises(this.mode);
-    this.cdr.detectChanges();
-    this.timeSub = this.gameService.timeUpdated.subscribe((time) => {
-      console.log('Tiempo actualizado:', time);
-      this.cdr.markForCheck();
+    const userId = localStorage.getItem('userId');
+    this.authService.users.filter(user => {
+      if (user.id === userId) {
+        count = Number(user.exercisesPerGame);
+      } 
     });
+    if (!count) count = 10;
+    this.gameService.getExercises(this.mode, count);
   }
-  ngOnDestroy() {
-    this.timeSub.unsubscribe();
-    this.gameService.stopTimer();
+
+  public get currentExercise(): any {
+    return this.gameService.currentExercise;
+  }
+  public get progress(): number {
+    return this.gameService.progress;
+  }
+  public get showFeedback(): boolean {
+    return this.gameService.showFeedback;
   }
   public get timeLeft(): number {
     return this.gameService.timeLeft;
   }
-  public get currentExercise():any {
-    return this.gameService.currentExercise;
-  }
-  public checkSolution(solution: any | number) {
-    this.gameService.checkSolution(solution);
-    if (this.gameService.exercises.length === 0) {
-      this.showFeedback = true;
-      this.cdr.detectChanges();
-    }
-  }
-  public checkDivision() {
+
+  public checkDivision(): void {
     console.log(this.solucionCociente, this.solucionResto, this.currentExercise);
     this.gameService.checkSolution(this.solucionCociente)
     
@@ -65,11 +63,17 @@ export class GameComponent {
       this.solucionCociente = null as any;
       this.solucionResto = null as any;
       if (this.gameService.exercises.length === 0) {
-        this.showFeedback = true;
+        this.gameService.showFeedback = true;
       }
       this.cdr.detectChanges();
     }
 
+  }
+  public checkSolution(solution: any | number): void {
+    this.gameService.checkSolution(solution);
+    if (this.gameService.exercises.length === 0) {
+      this.gameService. showFeedback = true;
+    }
   }
   public getDigits(num: number): string[] {
     return num.toString().split('');

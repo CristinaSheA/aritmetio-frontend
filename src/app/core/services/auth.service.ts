@@ -130,7 +130,7 @@ export class AuthService {
     }
     try {
       const response = await this.http
-        .patch(`${this.apiUrl}/${user.id}`, user)
+        .patch(`${this.apiUrl}/${user.id}`, user).toPromise();
       console.log('User stats updated:', response);
       this.getUsers();
     } catch (error) {

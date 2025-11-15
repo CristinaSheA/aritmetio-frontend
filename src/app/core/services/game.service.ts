@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { WebsocketsService } from './websockets.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, count, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,26 +12,14 @@ export class GameService {
   public correctAnswers: number = 0;
   public incorrectAnswers: number = 0;
   public timeLeft: number = 0;
+  public timeLeft$ = new BehaviorSubject<number>(0);
   private timerInterval: any;
   public timeUpdated = new Subject<number>();
   public currentExercise!: any;
   public currentStreak: number = 0;
   public maxStreak: number = 0;
+  public showFeedback: boolean = false;
 
-
-  public startTimer(): void {
-    this.timeLeft = this.calculateTotalTime();
-    this.timerInterval = setInterval(() => {
-      this.timeLeft--;
-      this.timeUpdated.next(this.timeLeft);
-      if (this.timeLeft <= 0) {
-        clearInterval(this.timerInterval);
-      }
-    }, 1000);
-  }
-  public stopTimer(): void {
-    clearInterval(this.timerInterval);
-  }
   public checkSolution(solution: any | number): void {
     let inputValue
     let parsedValue
@@ -47,7 +35,7 @@ export class GameService {
       parsedValue = parseInt(inputValue, 10);
       console.log(inputValue, parsedValue);
     }
-    
+    if (inputValue === '') return
     if (parsedValue === this.currentExercise.result && inputValue !== '') {
       if (this.exercises.length === 0) {
         this.playSound('./sounds/sucess.mp3');
@@ -68,24 +56,48 @@ export class GameService {
       return
     }
   }
-  public async getExercises(mode: string): Promise<void> {
+  public totalExercises: number = 0;
+
+  public get progress(): number {
+    const completed = this.totalExercises - this.exercises.length - 1;  
+    return Math.max(0, (completed / this.totalExercises) * 100);
+  }
+  public async getExercises(mode: string, count: number): Promise<void> {
     const token = localStorage.getItem('userToken');
     const userId = localStorage.getItem('userId');
     await this.wsService.connect(userId!, token!);
-    this.wsService.emit('startGame', { operationType: mode.toUpperCase() });
-    this.wsService
-      .on<{ exercises: any[] }>('gameStarted')
-      .subscribe((payload) => {
-        this.exercises = payload.exercises;
-      });
+
+    this.wsService.on<{ exercises: any[] }>('gameStarted').subscribe((payload) => {
+      this.exercises = payload.exercises;
+      this.totalExercises = payload.exercises.length;
+      this.currentExercise = this.exercises.pop();
+      this.startTimer();
+    });
+
+    this.wsService.emit('startGame', { operationType: mode.toUpperCase(), count: count});
+  }
+  public startTimer(): void {
+    this.timeLeft = this.calculateTotalTime();
+    this.timeLeft$.next(this.timeLeft);
+    this.timerInterval = setInterval(() => {
+      this.timeLeft--;
+      this.timeLeft$.next(this.timeLeft);
+      if (this.timeLeft <= 5 && this.timeLeft > 0) this.playSound('./sounds/beep.mp3');
+      if (this.timeLeft <= 0) this.stopTimer();
+    }, 1000);
+  }
+  public stopTimer(): void {
+    clearInterval(this.timerInterval);
+    this.showFeedback = true
+  }
+  private calculateTotalTime(): number {
+    const secondsPerExercise = 7;
+    return this.exercises.length * secondsPerExercise;
   }
   private playSound(soundPath: string): void {
     this.audio.src = soundPath;
     this.audio.load();
     this.audio.play().catch((e) => console.error('Error al reproducir sonido:', e));
   }
-  private calculateTotalTime(): number {
-    const secondsPerExercise = 7;
-    return this.exercises.length * secondsPerExercise;
-  }
+  
 }

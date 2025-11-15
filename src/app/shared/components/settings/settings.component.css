@@ -49,14 +49,11 @@ button:hover {
   color: #196EF0;
   font-weight: 500;
 }
-.change-password-title {
-  margin-bottom: 20px;
-}
 .password-input-container {
   margin-top: 20px;
 }
 .settings-input {
-  width: 90%;
+  width: 100%;
   padding: 12px 15px;
   border: 2px solid #bedafb;
   border-radius: 10px;
@@ -97,7 +94,7 @@ button:hover {
   color: #fff;
   font-weight: bold;
 }
-.language-selector {
+select {
   width: 100%;
   padding: 12px 15px;
   border: 2px solid #bedafb;
@@ -144,19 +141,10 @@ button:hover {
   transition: transform 0.14s;
 }
 .change-password {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
   border-radius: 23px;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  z-index: 100;
   color: #196EF0;
-  text-align: center;
+  width: 100%;
+  max-width: 420px;
 }
 .change-password input {
   margin-bottom: 10px;

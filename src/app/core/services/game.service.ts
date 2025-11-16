@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { WebsocketsService } from './websockets.service';
 import { BehaviorSubject, count, Subject } from 'rxjs';
+import { StatsService } from './stats.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
   private readonly wsService = inject(WebsocketsService);
+  private readonly statsService = inject(StatsService);
+
   private readonly audio = new Audio();
   public exercises: any[] = [];
   public correctAnswers: number = 0;
@@ -19,6 +22,7 @@ export class GameService {
   public currentStreak: number = 0;
   public maxStreak: number = 0;
   public showFeedback: boolean = false;
+  public totalExercises: number = 0;
 
   public checkSolution(solution: any | number): void {
     let inputValue
@@ -28,7 +32,6 @@ export class GameService {
       a = true
       inputValue = solution.toString();
       parsedValue = solution;
-      console.log(inputValue, parsedValue);
     } else {
       a = false
       inputValue = solution.target.value;
@@ -47,6 +50,7 @@ export class GameService {
       this.correctAnswers++;
       this.currentStreak++;
       if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
+      this.statsService.increaseTotalOperations(localStorage.getItem('userId')!);
       this.currentExercise = this.exercises.pop();
     } else if (parsedValue !== this.currentExercise.result || inputValue === '') {
       this.playSound('./sounds/error.mp3');
@@ -56,7 +60,6 @@ export class GameService {
       return
     }
   }
-  public totalExercises: number = 0;
 
   public get progress(): number {
     const completed = this.totalExercises - this.exercises.length - 1;  

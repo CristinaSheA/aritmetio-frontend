@@ -12,8 +12,20 @@ import { StatsService } from '../../../core/services/stats.service';
   styleUrl: './stats.css'
 })
 export class StatsComponent {
+  public readonly statsService = inject(StatsService);
 
-  
+  ngOnInit() {
+    const userId = localStorage.getItem('userId') || '';
+    this.statsService.getTotalOperations(userId);
+  }
+
+  public get totalOperations() {
+    return this.statsService.settings.totalOperations;
+  }
+  public get weeklyOperations() {
+    return this.statsService.settings.weeklyOperations;
+  }
+
   // data: any;
   // options: any;
   // public readonly statsService = inject(StatsService);

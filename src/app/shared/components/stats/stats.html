@@ -35,10 +35,14 @@
           <div class="stat-title">
             <i class="pi pi-list"></i> Operaciones Realizadas
           </div>
-          <div class="stat-number">348</div>
-          <div class="positive-trend">
-            <i class="pi pi-arrow-up"></i> 42 esta semana
-          </div>
+          @if(totalOperations > 0) {
+            <div class="stat-number">{{totalOperations}}</div>
+            @if(weeklyOperations > 0) {
+              <div class="positive-trend">
+                <i class="pi pi-arrow-up"></i> {{weeklyOperations}} esta semana
+              </div>
+            }
+          }
         </p-card>
       </div>
 

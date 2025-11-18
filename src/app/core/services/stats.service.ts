@@ -12,14 +12,35 @@ export class StatsService {
 
   public settings: Stats = {
     totalOperations: 0,
-    weeklyOperations: 0
+    weeklyOperations: 0,
+    globalPrecision: 0,
+    weeklyPrecision: 0
   }
-
   
-  public getGlobalPrecision(userId: string) {}
-  public getWeeklyPrecision(userId: string) {}
-  public getAverageTimePerOperation(userId: string) {}
-
+  public getGlobalPrecision(userId: string) {
+    this.http.get(`${this.url}/global-precision/${userId}`).subscribe({
+      next: (response) => {
+        this.settings.globalPrecision = response as number;
+        this.settings.globalPrecision = Math.round(this.settings.globalPrecision * 100) / 100;
+      },
+      error: (error) => {
+        console.error('Error al recibir las operaciones totales', error);
+        return;
+      },
+    });
+  }
+  public getWeeklyPrecision(userId: string) {
+    this.http.get(`${this.url}/weekly-precision/${userId}`).subscribe({
+      next: (response) => {
+        this.settings.weeklyPrecision = response as number;
+        this.settings.weeklyPrecision = Math.round(this.settings.weeklyPrecision * 100) / 100;
+      },
+      error: (error) => {
+        console.error('Error al recibir las operaciones de la última semana', error); 
+        return;
+      }
+    });
+  }
   public async getTotalOperations(userId: string) {
     this.http.get(`${this.url}/total-operations/${userId}`).subscribe({
       next: (response) => {
@@ -42,8 +63,8 @@ export class StatsService {
       },
     });
   }
-  public increaseTotalOperations(userId: string) {
-    this.http.post(`${this.url}`, { userId: userId }).subscribe({
+  public increaseTotalOperations(userId: string, isCorrect: boolean) {
+    this.http.post(`${this.url}`, { userId: userId, isCorrect }).subscribe({
       next: (response) => {
         console.log('Operación registrada correctamente', response);
       },
@@ -53,5 +74,4 @@ export class StatsService {
       },
     });
   }
-  public getMaximumPunctuation(userId: string) {}
 }

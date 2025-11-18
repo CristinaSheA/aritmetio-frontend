@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
-import { TagModule } from 'primeng/tag'; 
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { StatsService } from '../../../core/services/stats.service';
@@ -9,7 +9,7 @@ import { StatsService } from '../../../core/services/stats.service';
   selector: 'app-stats',
   imports: [ChartModule, TagModule, CardModule, ProgressBarModule],
   templateUrl: './stats.html',
-  styleUrl: './stats.css'
+  styleUrl: './stats.css',
 })
 export class StatsComponent {
   public readonly statsService = inject(StatsService);
@@ -17,6 +17,25 @@ export class StatsComponent {
   ngOnInit() {
     const userId = localStorage.getItem('userId') || '';
     this.statsService.getTotalOperations(userId);
+    this.statsService.getWeeklyOperations(userId);
+    this.statsService.getGlobalPrecision(userId);
+    this.statsService.getWeeklyPrecision(userId);
+
+    this.data = {
+    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+    datasets: [
+      {
+        label: 'Ejercicios hechos',
+        data: [12, 19, 3, 5, 2, 3, 7],
+        backgroundColor: '#42A5F5'
+      }
+    ]
+  };
+
+  this.options = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
   }
 
   public get totalOperations() {
@@ -26,41 +45,15 @@ export class StatsComponent {
     return this.statsService.settings.weeklyOperations;
   }
 
-  // data: any;
-  // options: any;
-  // public readonly statsService = inject(StatsService);
+  public get globalPrecision(): number {
+    return this.statsService.settings.globalPrecision;
+  }
+  public get weeklyPrecision(): number {
+    return this.statsService.settings.weeklyPrecision;
+  }
 
-  // ngOnInit() {
-  //   this.statsService.initializeCharts();
-  //   this.statsService.loadPerformanceData();
-  //   this.statsService.loadDifficultProblems();
-  //   this.statsService.loadUserRanking();
-  //   this.statsService.loadSessionHistory();
-  //   this.statsService.loadAchievements();
-  //   this.statsService.loadDifficultyStats();
-  // }
+  data: any;
+options: any;
 
-  // public getInfo(info: string) {
-  //   switch (info) {
-  //     case 'progressData': return this.statsService.progressData
-  //     case 'progressOptions': return this.statsService.progressOptions
-  //     case 'distributionData': return this.statsService.distributionData
-  //     case 'distributionOptions': return this.statsService.distributionOptions
-  //     case 'dailyPerformanceData': return this.statsService.dailyPerformanceData
-  //     case 'dailyPerformanceOptions': return this.statsService.dailyPerformanceOptions
-  //     case 'responseTimeData': return this.statsService.responseTimeData
-  //     case 'responseTimeOptions': return this.statsService.responseTimeOptions
-  //     case 'metrics': return this.statsService.metrics
-  //     case 'performanceData': return this.statsService.performanceData
-  //     case 'difficultProblems': return this.statsService.difficultProblems
-  //     case 'userRanking': return this.statsService.userRanking
-  //     case 'sessionHistory': return this.statsService.sessionHistory
-  //     case 'achievements': return this.statsService.achievements
-  //     case 'difficultyStats': return this.statsService.difficultyStats
-  //   }
-  // }
-  // getOperationSeverity(type: string) {
-  //   return this.statsService.getOperationSeverity(type);
-  // }
+
 }
-

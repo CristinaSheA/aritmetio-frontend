@@ -11,21 +11,9 @@
           <div class="stat-title">
             <i class="pi pi-check-circle"></i> Precisión Global
           </div>
-          <div class="stat-number">87%</div>
+          <div class="stat-number">{{globalPrecision}}%</div>
           <div class="positive-trend">
-            <i class="pi pi-arrow-up"></i> 5% desde la semana pasada
-          </div>
-        </p-card>
-      </div>
-
-      <div class="col-12 md:col-6 lg:col-3">
-        <p-card class="h-full">
-          <div class="stat-title">
-            <i class="pi pi-clock"></i> Tiempo Promedio
-          </div>
-          <div class="stat-number">12.4s</div>
-          <div class="negative-trend">
-            <i class="pi pi-arrow-down"></i> 1.2s más rápido
+            <i class="pi pi-arrow-up"></i> {{weeklyPrecision}}% desde la semana pasada
           </div>
         </p-card>
       </div>
@@ -45,22 +33,12 @@
           }
         </p-card>
       </div>
-
-      <div class="col-12 md:col-6 lg:col-3">
-        <p-card class="h-full">
-          <div class="stat-title">
-            <i class="pi pi-star"></i> Puntuación Máxima
-          </div>
-          <div class="stat-number">92</div>
-          <div class="positive-trend">+3 desde ayer</div>
-        </p-card>
-      </div>
     </div>
-    <!-- <div class="stats">
-      <div class="col-12 lg:col-8">
+    <div class="stats">
+      <!-- <div class="col-12 lg:col-8">
         <p-card>
           <div class="section-title">
-            <div class="icon-wrapper"><i class="pi pi-chart-line"></i></div>
+            <div class="icon-wrapper"><i class="pi pi-cha rt-line"></i></div>
             Progreso Semanal de Precisión
           </div> -->
           <!-- * [data]="progressData" [options]="progressOptions" -->
@@ -71,23 +49,18 @@
             height="300px"
           ></p-chart>
         </p-card>
-      </div>
+      </div> -->
 
       <div class="col-12 lg:col-4">
         <p-card>
           <div class="section-title">
             <div class="icon-wrapper"><i class="pi pi-chart-pie"></i></div>
             Distribución de Operaciones
-          </div> -->
+          </div>
           <!-- * [data]="distributionData" [options]="distributionOptions" -->
-          <!-- <p-chart
-            type="doughnut"
-            [data]="getInfo('distributionData')"
-            [options]="getInfo('distributionOptions')"
-            height="300px"
-          ></p-chart>
+          <p-chart type="doughnut" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
         </p-card>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>

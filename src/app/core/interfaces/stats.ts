@@ -1,4 +1,6 @@
 export interface Stats { 
   totalOperations: number,
-  weeklyOperations: number
+  weeklyOperations: number,
+  globalPrecision: number,
+  weeklyPrecision: number
 }

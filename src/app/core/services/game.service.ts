@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { WebsocketsService } from './websockets.service';
-import { BehaviorSubject, count, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { StatsService } from './stats.service';
 
 @Injectable({
@@ -24,42 +24,101 @@ export class GameService {
   public showFeedback: boolean = false;
   public totalExercises: number = 0;
 
+  // public checkSolution(solution: any | number): void {
+  //   let inputValue
+  //   let parsedValue
+  //   let a
+  //   if (typeof solution === 'number') {
+  //     a = true
+  //     inputValue = solution.toString();
+  //     parsedValue = solution;
+  //   } else {
+  //     a = false
+  //     inputValue = solution.target.value;
+  //     parsedValue = parseInt(inputValue, 10);
+  //     console.log(inputValue, parsedValue);
+  //   }
+  //   if (inputValue === '') return
+  //   if (parsedValue === this.currentExercise.result && inputValue !== '') {
+  //     if (this.exercises.length === 0) {
+  //       this.playSound('./sounds/sucess.mp3');
+  //       return
+  //     }
+  //     if (a) solution = null
+  //     else solution.target.value = '';
+  //     this.playSound('./sounds/pop.mp3');
+  //     this.correctAnswers++;
+  //     this.currentStreak++;
+  //     if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
+  //     this.statsService.increaseTotalOperations(localStorage.getItem('userId')!, false);
+  //     this.currentExercise = this.exercises.pop();
+  //   } else if (parsedValue !== this.currentExercise.result || inputValue === '') {
+  //     this.playSound('./sounds/error.mp3');
+  //     this.incorrectAnswers++;
+  //     this.currentStreak = 0;
+  //     solution.target.value = '';
+  //     return
+  //   }
+  // }
+
+  public hasRecordedOperation = false;
+
   public checkSolution(solution: any | number): void {
-    let inputValue
-    let parsedValue
-    let a
+    let inputValue;
+    let parsedValue;
+    let a;
+
     if (typeof solution === 'number') {
-      a = true
+      a = true;
       inputValue = solution.toString();
       parsedValue = solution;
     } else {
-      a = false
+      a = false;
       inputValue = solution.target.value;
       parsedValue = parseInt(inputValue, 10);
-      console.log(inputValue, parsedValue);
     }
-    if (inputValue === '') return
-    if (parsedValue === this.currentExercise.result && inputValue !== '') {
-      if (this.exercises.length === 0) {
-        this.playSound('./sounds/sucess.mp3');
-        return
+    if (inputValue === '') return;
+    if (parsedValue !== this.currentExercise.result) {
+      
+      if (!this.hasRecordedOperation) {
+        this.statsService.increaseTotalOperations(
+          localStorage.getItem('userId')!,
+          false
+        );
+        this.hasRecordedOperation = true;
       }
-      if (a) solution = null
-      else solution.target.value = '';
-      this.playSound('./sounds/pop.mp3');
-      this.correctAnswers++;
-      this.currentStreak++;
-      if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
-      this.statsService.increaseTotalOperations(localStorage.getItem('userId')!);
-      this.currentExercise = this.exercises.pop();
-    } else if (parsedValue !== this.currentExercise.result || inputValue === '') {
+
       this.playSound('./sounds/error.mp3');
       this.incorrectAnswers++;
       this.currentStreak = 0;
-      solution.target.value = '';
-      return
+
+      if (!a) solution.target.value = '';
+      return;
     }
+
+    if (!this.hasRecordedOperation) {
+      this.statsService.increaseTotalOperations(
+        localStorage.getItem('userId')!,
+        true
+      );
+    }
+
+    this.correctAnswers++;
+    this.currentStreak++;
+    if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
+
+    this.hasRecordedOperation = false;
+
+    if (this.exercises.length === 0) {
+      this.playSound('./sounds/sucess.mp3');
+      return;
+    }
+
+    if (!a) solution.target.value = '';
+    this.playSound('./sounds/pop.mp3');
+    this.currentExercise = this.exercises.pop();
   }
+
 
   public get progress(): number {
     const completed = this.totalExercises - this.exercises.length - 1;  

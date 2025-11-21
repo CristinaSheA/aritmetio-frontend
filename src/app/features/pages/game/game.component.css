@@ -41,7 +41,6 @@ main {
 .main-back {
   z-index: -1;
   border-radius: 23px;
-
 }
 .head {
   height: 54px;
@@ -235,31 +234,17 @@ label {
   right: 43%;
 }
 @media (max-width: 2012px) {
-  .planet-3 {
-    left: 10%;
-  }
+  .planet-3 { left: 10%; }
 }
 @media (max-width: 1600px) {
-  .planet-3 {
-    left: -5%;
-  }
-  main {
-    right: 30%;
-  }
+  .planet-3 { left: -5%; }
+  main { right: 30%; }
 }
 @media (max-width: 1024px) {
-  .planet-3 {
-    display: none;
-  }
-  main {
-    right: 20%;
-  }
-  .planet-1 {
-    width: 100%;
-  }
+  .planet-1 { width: 100%; }
+  .planet-3 { display: none; }
+  main { right: 20%;  }
 }
 @media (max-width: 658px) {
-  main {
-    right: 10%;
-  }
+  main { right: 10%; }
 }

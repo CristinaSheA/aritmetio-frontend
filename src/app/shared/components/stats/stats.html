@@ -5,61 +5,58 @@
   </div>
 
   <div class="grid">
-    <div class="text">
-      <div class="col-12 md:col-6 lg:col-3">
-        <p-card class="h-full">
-          <div class="stat-title">
-            <i class="pi pi-check-circle"></i> Precisión Global
-          </div>
-          <div class="stat-number">{{globalPrecision}}%</div>
-          <div class="positive-trend">
-            <i class="pi pi-arrow-up"></i> {{weeklyPrecision}}% desde la semana pasada
-          </div>
-        </p-card>
-      </div>
-
-      <div class="col-12 md:col-6 lg:col-3">
-        <p-card class="h-full">
-          <div class="stat-title">
-            <i class="pi pi-list"></i> Operaciones Realizadas
-          </div>
-          @if(totalOperations > 0) {
-            <div class="stat-number">{{totalOperations}}</div>
-            @if(weeklyOperations > 0) {
-              <div class="positive-trend">
-                <i class="pi pi-arrow-up"></i> {{weeklyOperations}} esta semana
-              </div>
-            }
-          }
-        </p-card>
-      </div>
-    </div>
     <div class="stats">
-      <!-- <div class="col-12 lg:col-8">
-        <p-card>
-          <div class="section-title">
-            <div class="icon-wrapper"><i class="pi pi-cha rt-line"></i></div>
-            Progreso Semanal de Precisión
-          </div> -->
-          <!-- * [data]="progressData" [options]="progressOptions" -->
-           <!-- <p-chart
-            type="line"
-            [data]="getInfo('progressData')"
-            [options]="getInfo('progressOptions')"
-            height="300px"
-          ></p-chart>
-        </p-card>
-      </div> -->
-
       <div class="col-12 lg:col-4">
         <p-card>
           <div class="section-title">
             <div class="icon-wrapper"><i class="pi pi-chart-pie"></i></div>
             Distribución de Operaciones
           </div>
-          <!-- * [data]="distributionData" [options]="distributionOptions" -->
-          <p-chart type="doughnut" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
+          <p-chart
+            type="pie"
+            [data]="opDistributionData"
+            [options]="opDistributionOptions"
+            class="w-full md:w-[30rem]"
+          />
         </p-card>
+      </div>
+      <div class="col-12 lg:col-4">
+        <p-card>
+          <div class="section-title">
+            <div class="icon-wrapper"><i class="pi pi-chart-scatter"></i></div>
+            Rendimiento Diario
+          </div>
+          <p-chart
+            type="bar"
+            [data]="dailyPerformanceData"
+            [options]="dailyPerformanceOptions"
+            class="h-[30rem]"
+          />
+        </p-card>
+        <div class="text-line">
+          <p-card class="h-full text-card">
+            <div class="stat-title">
+              <i class="pi pi-check-circle"></i> Precisión Global
+            </div>
+            <div class="stat-number">{{ globalPrecision }}%</div>
+            <div class="positive-trend">
+              <i class="pi pi-arrow-up"></i> {{ weeklyPrecision }}% desde la
+              semana pasada
+            </div>
+          </p-card>
+          <p-card class="h-full text-card">
+            <div class="stat-title">
+              <i class="pi pi-list"></i> Operaciones Realizadas
+            </div>
+            @if(totalOperations > 0) {
+            <div class="stat-number">{{ totalOperations }}</div>
+            @if(weeklyOperations > 0) {
+            <div class="positive-trend">
+              <i class="pi pi-arrow-up"></i> {{ weeklyOperations }} esta semana
+            </div>
+            } }
+          </p-card>
+        </div>
       </div>
     </div>
   </div>

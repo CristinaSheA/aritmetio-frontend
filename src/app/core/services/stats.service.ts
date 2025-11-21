@@ -6,12 +6,12 @@ import { Stats } from '../interfaces/stats';
   providedIn: 'root'
 })
 export class StatsService {
-  public showStats: boolean = true;
+  public showStats: boolean = false;
   public url: string = 'http://localhost:3000/stats';
   private readonly http = inject(HttpClient);
 
   public settings: Stats = {
-    totalOperations: 0,
+    totalOperations: [],
     weeklyOperations: 0,
     globalPrecision: 0,
     weeklyPrecision: 0
@@ -44,7 +44,9 @@ export class StatsService {
   public async getTotalOperations(userId: string) {
     this.http.get(`${this.url}/total-operations/${userId}`).subscribe({
       next: (response) => {
-        this.settings.totalOperations = response as number;
+        this.settings.totalOperations = response as [];
+        console.log(this.settings.totalOperations);
+        
       },
       error: (error) => {
         console.error('Error al recibir las operaciones totales', error);
@@ -63,8 +65,9 @@ export class StatsService {
       },
     });
   }
-  public increaseTotalOperations(userId: string, isCorrect: boolean) {
-    this.http.post(`${this.url}`, { userId: userId, isCorrect }).subscribe({
+
+  public increaseTotalOperations(userId: string, isCorrect: boolean, type: string) {
+    this.http.post(`${this.url}`, { userId: userId, isCorrect, type }).subscribe({
       next: (response) => {
         console.log('Operación registrada correctamente', response);
       },

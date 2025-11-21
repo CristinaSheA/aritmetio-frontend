@@ -56,7 +56,7 @@ export class GameComponent {
 
   public checkDivision(): void {
     console.log(this.solucionCociente, this.solucionResto, this.currentExercise);
-    this.gameService.checkSolution(this.solucionCociente)
+    this.gameService.checkSolution(this.solucionCociente, this.currentExercise.operationType)
     
     if (this.solucionResto === this.currentExercise.remainder
     ) {
@@ -70,7 +70,7 @@ export class GameComponent {
 
   }
   public checkSolution(solution: any | number): void {
-    this.gameService.checkSolution(solution);
+    this.gameService.checkSolution(solution, this.currentExercise.operationType);
     if (this.gameService.exercises.length === 0) {
       this.gameService. showFeedback = true;
     }

@@ -1,5 +1,5 @@
 export interface Stats { 
-  totalOperations: number,
+  totalOperations: [],
   weeklyOperations: number,
   globalPrecision: number,
   weeklyPrecision: number

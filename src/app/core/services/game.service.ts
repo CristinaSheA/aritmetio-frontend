@@ -63,7 +63,7 @@ export class GameService {
 
   public hasRecordedOperation = false;
 
-  public checkSolution(solution: any | number): void {
+  public checkSolution(solution: any | number, type: string): void {
     let inputValue;
     let parsedValue;
     let a;
@@ -83,7 +83,8 @@ export class GameService {
       if (!this.hasRecordedOperation) {
         this.statsService.increaseTotalOperations(
           localStorage.getItem('userId')!,
-          false
+          false,
+          type
         );
         this.hasRecordedOperation = true;
       }
@@ -99,7 +100,8 @@ export class GameService {
     if (!this.hasRecordedOperation) {
       this.statsService.increaseTotalOperations(
         localStorage.getItem('userId')!,
-        true
+        true,
+        type
       );
     }
 

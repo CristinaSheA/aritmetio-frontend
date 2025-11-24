@@ -40,7 +40,7 @@ export class AuthComponent {
         let username = claims.name.toLowerCase().split(" ").join("") + randomNum;
         this.form.get('username')?.setValue(username);
         console.log(claims.name.toLowerCase().split(" ").join(""));
-        this.authService.createUserGoogle(username, claims.email);
+        this.authService.loginOrRegisterGoogle(username, claims.email);
         console.log();
       }
     });

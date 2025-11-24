@@ -69,30 +69,30 @@ export class StatsComponent {
   }
 
   public get totalOperations() {
-    return this.statsService.settings.totalOperations.length;
+    return this.statsService.stats.totalOperations.length;
   }
   public get weeklyOperations() {
-    return this.statsService.settings.weeklyOperations;
+    return this.statsService.stats.weeklyOperations;
   }
   public get globalPrecision(): number {
-    return this.statsService.settings.globalPrecision;
+    return this.statsService.stats.globalPrecision;
   }
   public get weeklyPrecision(): number {
-    return this.statsService.settings.weeklyPrecision;
+    return this.statsService.stats.weeklyPrecision;
   }
   private getOpsPercent(type: string): number {
-    let totalOps = this.statsService.settings.totalOperations;
+    let totalOps = this.statsService.stats.totalOperations;
     let addition = totalOps.filter(
-      (op: any) => op.operationType === 'ADDITION'
+      (op: any) => op.operationType === 'ADD'
     );
     let subtraction = totalOps.filter(
-      (op: any) => op.operationType === 'SUBTRACTION'
+      (op: any) => op.operationType === 'SUB'
     );
     let multiplication = totalOps.filter(
-      (op: any) => op.operationType === 'MULTIPLICATION'
+      (op: any) => op.operationType === 'MUL'
     );
     let division = totalOps.filter(
-      (op: any) => op.operationType === 'DIVISION'
+      (op: any) => op.operationType === 'DIV'
     );
     switch (type) {
       case 'addition':

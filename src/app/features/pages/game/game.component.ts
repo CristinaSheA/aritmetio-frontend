@@ -33,12 +33,10 @@ export class GameComponent {
     this.mode = this.route.snapshot.paramMap.get('mode') || '';
     const userId = localStorage.getItem('userId');
     this.authService.users.filter(user => {
-      if (user.id === userId) {
-        count = Number(user.exercisesPerGame);
-      } 
+      if (user.id === userId) count = Number(user.exercisesPerGame);
     });
     if (!count) count = 10;
-    this.gameService.getExercises(this.mode, count);
+    this.gameService.getAllExercises(this.mode, count);
   }
 
   public get currentExercise(): any {
@@ -49,9 +47,6 @@ export class GameComponent {
   }
   public get showFeedback(): boolean {
     return this.gameService.showFeedback;
-  }
-  public get timeLeft(): number {
-    return this.gameService.timeLeft;
   }
 
   public checkDivision(): void {

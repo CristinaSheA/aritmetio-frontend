@@ -6,11 +6,10 @@ import { Stats } from '../interfaces/stats';
   providedIn: 'root'
 })
 export class StatsService {
-  public showStats: boolean = false;
   public url: string = 'http://localhost:3000/stats';
   private readonly http = inject(HttpClient);
 
-  public settings: Stats = {
+  public stats: Stats = {
     totalOperations: [],
     weeklyOperations: 0,
     globalPrecision: 0,
@@ -18,63 +17,26 @@ export class StatsService {
   }
   
   public getGlobalPrecision(userId: string) {
-    this.http.get(`${this.url}/global-precision/${userId}`).subscribe({
-      next: (response) => {
-        this.settings.globalPrecision = response as number;
-        this.settings.globalPrecision = Math.round(this.settings.globalPrecision * 100) / 100;
-      },
-      error: (error) => {
-        console.error('Error al recibir las operaciones totales', error);
-        return;
-      },
-    });
+    const response = this.http.get(`${this.url}/global-precision/${userId}`)
+    this.stats.globalPrecision = response as unknown as number;
+    this.stats.globalPrecision = Math.round(this.stats.globalPrecision * 100) / 100;
   }
   public getWeeklyPrecision(userId: string) {
-    this.http.get(`${this.url}/weekly-precision/${userId}`).subscribe({
-      next: (response) => {
-        this.settings.weeklyPrecision = response as number;
-        this.settings.weeklyPrecision = Math.round(this.settings.weeklyPrecision * 100) / 100;
-      },
-      error: (error) => {
-        console.error('Error al recibir las operaciones de la última semana', error); 
-        return;
-      }
-    });
+    const response = this.http.get(`${this.url}/weekly-precision/${userId}`)
+    this.stats.weeklyPrecision = response as unknown as number;
+    this.stats.weeklyPrecision = Math.round(this.stats.weeklyPrecision * 100) / 100;
+    
   }
   public async getTotalOperations(userId: string) {
-    this.http.get(`${this.url}/total-operations/${userId}`).subscribe({
-      next: (response) => {
-        this.settings.totalOperations = response as [];
-        console.log(this.settings.totalOperations);
-        
-      },
-      error: (error) => {
-        console.error('Error al recibir las operaciones totales', error);
-        return;
-      },
-    });
+    const response = this.http.get(`${this.url}/total-operations/${userId}`)
+    this.stats.totalOperations = response as unknown as [];
+    console.log(this.stats.totalOperations);
   }
   public async getWeeklyOperations(userId: string) {
-    this.http.get(`${this.url}/weekly-operations/${userId}`).subscribe({
-      next: (response) => {
-        this.settings.weeklyOperations = response as number;
-      },
-      error: (error) => {
-        console.error('Error al recibir las operaciones de la última semana', error);
-        return;
-      },
-    });
+    const response = this.http.get(`${this.url}/weekly-operations/${userId}`)
+    this.stats.weeklyOperations = response as unknown as number;
   }
-
   public increaseTotalOperations(userId: string, isCorrect: boolean, type: string) {
-    this.http.post(`${this.url}`, { userId: userId, isCorrect, type }).subscribe({
-      next: (response) => {
-        console.log('Operación registrada correctamente', response);
-      },
-      error: (error) => {
-        console.error('Error al registrar la operación', error);
-        return;
-      },
-    });
+    this.http.post(`${this.url}`, { userId: userId, isCorrect, type })
   }
 }

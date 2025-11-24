@@ -38,14 +38,12 @@ export class FeedbackComponent {
     '¡Se puede mejorar! Cada fallo cuenta 💡💥',
   ]
   public get totalExercises(): number {
-  return this.gameService.correctAnswers + this.gameService.incorrectAnswers;
+  return this.gameService.totalExercises;
   }
   public get correctAnswers(): number {
     return this.gameService.correctAnswers;
   }
-  public get incorrectAnswers(): number {
-    return this.gameService.incorrectAnswers;
-  }
+
   public get successPercentage(): number {
     const total = this.totalExercises;
     if (total === 0) return 0;
@@ -66,7 +64,6 @@ export class FeedbackComponent {
   public redirectMainPage(): void {
     this.gameService.showFeedback = false;
     this.gameService.correctAnswers = 0;
-    this.gameService.incorrectAnswers = 0;
     this.gameService.currentStreak = 0;
     this.gameService.maxStreak = 0;
   }

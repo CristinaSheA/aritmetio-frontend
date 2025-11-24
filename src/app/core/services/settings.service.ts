@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { User } from '../interfaces/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsService {
   private readonly authService = inject(AuthService);
@@ -16,10 +16,18 @@ export class SettingsService {
     const currentPassword = form.get('currentPassword')!.value;
     const newPassword = form.get('newPassword')!.value;
     const newPasswordCheck = form.get('newPasswordCheck')!.value;
-    const currentUserId = localStorage.getItem('userId');
-    const user = this.authService.users.find((u) => u.id === currentUserId);
+    const user = this.authService.users.find(
+      (u) => u.id === localStorage.getItem('userId')
+    );
     if (!user) return;
-    if (!this.validatePasswordChange(currentPassword, newPassword, newPasswordCheck, user)) {
+    if (
+      !this.validatePasswordChange(
+        currentPassword,
+        newPassword,
+        newPasswordCheck,
+        user
+      )
+    ) {
       return;
     }
 
@@ -28,20 +36,25 @@ export class SettingsService {
       console.error('Failed to update user password', error);
     });
   }
-  private validatePasswordChange(currentPassword: string, newPassword: string, confirmPassword: string, user: User): boolean {
-    if (user.password !== currentPassword) {
+  private validatePasswordChange(
+    current: string,
+    next: string,
+    confirm: string,
+    user: User
+  ): boolean {
+    if (user.password !== current) {
       console.error('La contraseña actual es incorrecta');
       return false;
     }
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (!current || !next || !confirm) {
       console.error('Todos los campos son obligatorios');
       return false;
     }
-    if (newPassword.length < 8 || newPassword.length > 20) {
+    if (next.length < 8 || next.length > 20) {
       console.error('La contraseña debe tener entre 8 y 20 caracteres');
       return false;
     }
-    if (newPassword !== confirmPassword) {
+    if (next !== confirm) {
       console.error('La nueva contraseña y la confirmación no coinciden');
       return false;
     }

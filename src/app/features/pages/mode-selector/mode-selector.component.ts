@@ -20,6 +20,7 @@ export class ModeSelectorComponent {
   private readonly authService = inject(AuthService);
   private readonly settingsService = inject(SettingsService);
   private readonly statsService = inject(StatsService);
+  public showStats: boolean = false;
 
   public logOut() {
     this.authService.logOut();
@@ -31,12 +32,9 @@ export class ModeSelectorComponent {
   public get showSettings() {
     return this.settingsService.showSettings;
   }
-  public get showStats() {
-    return this.statsService.showStats;
-  }
 
   public toggleStats(stats: boolean) {
-    return this.statsService.showStats = stats;
+    return this.showStats = stats;
   }
   
 }

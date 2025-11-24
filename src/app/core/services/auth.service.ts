@@ -23,17 +23,17 @@ export class AuthService {
   private readonly wsService = inject(WebsocketsService);
   private readonly oauthService = inject(OAuthService);
   private readonly http = inject(HttpClient);
-  public apiUrl = 'http://localhost:3000/auth';
-
   private readonly router = inject(Router);
+
+  private apiUrl = 'http://localhost:3000/auth';
   public users: User[] = [];
 
   constructor() {
-    this.getUsers();
+    this.fetchUsers;
     this.oauthService.configure(authConfig);
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
-  public getUsers(): any {
+  public fetchUsers(): any {
     return this.http.get<any[]>(`${this.apiUrl}`).subscribe({
       next: (response) => {
         this.users = response;
@@ -43,27 +43,9 @@ export class AuthService {
       },
     });
   }
-  public getCurrentUser(): any {
-    const userId = localStorage.getItem('userId');
-    return this.http.get(`${this.apiUrl}/${userId}`).subscribe({
-      next: (response) => {
-        return response;
-      },
-      error: (error) => {
-        console.error('Error al recibir el usuario', error);
-        return;
-      },
-    });
-  }
   public get isLoggedIn(): boolean {
     const isAuthenticated = localStorage.getItem('isAuthenticated')
     return isAuthenticated === 'true';
-  }
-  public logOut(): void {
-    localStorage.removeItem('userId');
-    localStorage.setItem('isAuthenticated', 'false');
-    localStorage.removeItem('userToken');
-    this.router.navigate(['/auth']);
   }
   public createUser(form: FormGroup, authMode: string) {
     const username = form.get('username')!.value;
@@ -76,35 +58,13 @@ export class AuthService {
     this.createQuery(username, password, undefined).subscribe({
       next: (response) => {
         let userId = response.user?.id || response.id;
-        if (!userId || userId === 'undefined') {
-          console.error('ID de usuario inválido:', userId);
-          return;
-        }
-        this.saveAndRedirect(response.user.id, response.token);
-        this.wsService.connect(userId, response.token);
+        if (!userId || userId === 'undefined') return
+        this.persistSessionAndRedirect(response);
       },
       error: (error) => {
         console.error('Error al crear el usuario', error);
         this.router.navigate(['/mode-selector']);
         return;
-      },
-    });
-  }
-  public createUserGoogle(username: string, email: string): void {
-    this.createQuery(username, undefined, email).subscribe({
-      next: (response) => {
-        console.log('Usuario OAuth creado', response);  
-        localStorage.setItem('userId', response.user.id);
-        localStorage.setItem('userToken', response.token);
-        this.router.navigate(['/mode-selector']);
-        this.wsService.connect(response.user.id, response.token);
-      },
-      error: (error) => {
-        if (error.status === 409) {
-          console.warn('Usuario ya existe, iniciando sesión...');
-        } else {
-          console.error('Error OAuth', error);
-        }
       },
     });
   }
@@ -115,15 +75,33 @@ export class AuthService {
 
     this.loginQuery(username, password).subscribe({
       next: (response) => {
-        this.saveAndRedirect(response.user.id, response.token);
-        this.wsService.connect(response.user.id, response.token);
+        this.persistSessionAndRedirect(response);
       },
       error: (error) => {
         console.error('Error logging in', error);
       },
     });
   }
-
+  public loginOrRegisterGoogle(username: string, email: string): void {
+    this.createQuery(username, undefined, email).subscribe({
+      next: (response) => {
+        this.persistSessionAndRedirect(response);
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          console.warn('Usuario ya existe, iniciando sesión...');
+        } else {
+          console.error('Error OAuth', error);
+        }
+      },
+    });
+  }
+  public logOut(): void {
+    localStorage.removeItem('userId');
+    localStorage.setItem('isAuthenticated', 'false');
+    localStorage.removeItem('userToken');
+    this.router.navigate(['/auth']);
+  }
   public async updateUser(user: User): Promise<void> {
     if (!user?.id) {
       throw new Error('Invalid user data');
@@ -132,7 +110,7 @@ export class AuthService {
       const response = await this.http
         .patch(`${this.apiUrl}/${user.id}`, user).toPromise();
       console.log('User stats updated:', response);
-      this.getUsers();
+      this.fetchUsers();
     } catch (error) {
       console.error('Error updating user stats:', error);
       throw error;
@@ -200,22 +178,14 @@ export class AuthService {
     }
     return true;
   }
-  private saveAndRedirect(id: string, token: string): void {
-    localStorage.setItem('userId', id);
-    localStorage.setItem('userToken', token);
+  private persistSessionAndRedirect(response: any): void {
+    localStorage.setItem('userId', response.user.id);
+    localStorage.setItem('userToken', response.token);
     localStorage.setItem('isAuthenticated', 'true');
+    this.wsService.connect(response.user.id, response.token);
     this.router.navigate(['/mode-selector']);
   }
-  public loginOAuth() {
+  public loginOAuth(): void {
     this.oauthService.initLoginFlow(undefined, { prompt: 'select_account' });
-  }
-
-
-  get profile() {
-    return this.oauthService.getIdentityClaims();
-  }
-
-  get isLoggedInG() {
-    return !!this.oauthService.getAccessToken();
   }
 }

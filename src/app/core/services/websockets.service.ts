@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebsocketsService {
   private readonly uri: string = 'http://localhost:3000';
@@ -22,7 +22,9 @@ export class WebsocketsService {
         this.socket.disconnect();
       }
       this.socket = io(this.uri, {
-        auth: { id, token }, transports: ['websocket']});
+        auth: { id, token },
+        transports: ['websocket'],
+      });
 
       this.socket.on('connect', () => {
         console.log('Connected to WebSocket');
@@ -61,12 +63,12 @@ export class WebsocketsService {
     this.socket.emit(eventName, data);
   }
   public on<T = any>(eventName: string): Observable<T> {
-    return new Observable<T>(observer => {
+    return new Observable<T>((observer) => {
       if (!this.socket) {
         observer.error('WebSocket no inicializado');
         return;
       }
-      
+
       this.socket.on(eventName, (data: T) => {
         observer.next(data);
       });

@@ -6,7 +6,6 @@ import { SettingsComponent } from '../../../shared/components/settings/settings.
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../core/services/settings.service';
 import { StatsComponent } from '../../../shared/components/stats/stats';
-import { StatsService } from '../../../core/services/stats.service';
 
 @Component({
   selector: 'app-mode-selector',
@@ -19,7 +18,6 @@ export class ModeSelectorComponent {
   private readonly wsService = inject(WebsocketsService);
   private readonly authService = inject(AuthService);
   private readonly settingsService = inject(SettingsService);
-  private readonly statsService = inject(StatsService);
   public showStats: boolean = false;
 
   public logOut() {
@@ -32,9 +30,7 @@ export class ModeSelectorComponent {
   public get showSettings() {
     return this.settingsService.showSettings;
   }
-
   public toggleStats(stats: boolean) {
     return this.showStats = stats;
   }
-  
 }

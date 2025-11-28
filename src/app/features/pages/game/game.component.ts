@@ -24,8 +24,8 @@ export class GameComponent {
   private readonly gameService = inject(GameService);
   private readonly authService = inject(AuthService);
   public mode!: string;
-  public solucionCociente!: number;
-  public solucionResto!: number;
+  public quotient!: number;
+  public reminder!: number;
   public timeLeft$ = this.gameService.timeLeft$;
 
   ngOnInit() {
@@ -48,29 +48,16 @@ export class GameComponent {
   public get showFeedback(): boolean {
     return this.gameService.showFeedback;
   }
-
   public checkDivision(): void {
-    console.log(this.solucionCociente, this.solucionResto, this.currentExercise);
-    this.gameService.checkSolution(this.solucionCociente, this.currentExercise.operationType)
-    
-    if (this.solucionResto === this.currentExercise.remainder
-    ) {
-      this.solucionCociente = null as any;
-      this.solucionResto = null as any;
-      if (this.gameService.exercises.length === 0) {
-        this.gameService.showFeedback = true;
-      }
-      this.cdr.detectChanges();
-    }
-
+   this.gameService.checkDivision(
+     this.quotient,
+     this.reminder
+   );
   }
   public checkSolution(solution: any | number): void {
     this.gameService.checkSolution(solution, this.currentExercise.operationType);
-    if (this.gameService.exercises.length === 0) {
-      this.gameService. showFeedback = true;
-    }
   }
-  public getDigits(num: number): string[] {
+  public splitDigits(num: number): string[] {
     return num.toString().split('');
   }
 }

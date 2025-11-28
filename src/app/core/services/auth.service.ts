@@ -13,7 +13,7 @@ const authConfig: AuthConfig = {
   strictDiscoveryDocumentValidation: false,
   redirectUri: window.location.origin + '/auth',
   clientId: environment.googleClientId,
-  scope: 'openid profile email'
+  scope: 'openid profile email',
 };
 
 @Injectable({
@@ -24,8 +24,6 @@ export class AuthService {
   private readonly oauthService = inject(OAuthService);
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-
-  private apiUrl = 'http://localhost:3000/auth';
   public users: User[] = [];
 
   constructor() {
@@ -34,7 +32,7 @@ export class AuthService {
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
   public fetchUsers(): any {
-    return this.http.get<any[]>(`${this.apiUrl}`).subscribe({
+    return this.http.get<any[]>(`${environment.authURL}`).subscribe({
       next: (response) => {
         this.users = response;
       },
@@ -44,21 +42,22 @@ export class AuthService {
     });
   }
   public get isLoggedIn(): boolean {
-    const isAuthenticated = localStorage.getItem('isAuthenticated')
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
     return isAuthenticated === 'true';
   }
-  public createUser(form: FormGroup, authMode: string) {
+  public createUser(form: FormGroup, authState: string) {
     const username = form.get('username')!.value;
     const password = form.get('password')!.value;
     const passwordCheck = form.get('passwordCheck')!.value;
     console.log('here');
-    if (!this.checkErrors(username, password, passwordCheck, form, authMode)) return
+    if (!this.checkErrors(username, password, passwordCheck, form, authState))
+      return;
     console.log('here');
-    
+
     this.createQuery(username, password, undefined).subscribe({
       next: (response) => {
         let userId = response.user?.id || response.id;
-        if (!userId || userId === 'undefined') return
+        if (!userId || userId === 'undefined') return;
         this.persistSessionAndRedirect(response);
       },
       error: (error) => {
@@ -68,10 +67,10 @@ export class AuthService {
       },
     });
   }
-  public loginUser(form: FormGroup, authMode: string): void {
+  public loginUser(form: FormGroup, authState: string): void {
     const username = form.get('username')!.value;
     const password = form.get('password')!.value;
-    if (!this.checkErrors(username, password, null, form, authMode)) return
+    if (!this.checkErrors(username, password, null, form, authState)) return;
 
     this.loginQuery(username, password).subscribe({
       next: (response) => {
@@ -108,7 +107,8 @@ export class AuthService {
     }
     try {
       const response = await this.http
-        .patch(`${this.apiUrl}/${user.id}`, user).toPromise();
+        .patch(`${environment.authURL}/${user.id}`, user)
+        .toPromise();
       console.log('User stats updated:', response);
       this.fetchUsers();
     } catch (error) {
@@ -123,20 +123,24 @@ export class AuthService {
       return;
     }
 
-    this.http.delete(`${this.apiUrl}/${userId}`)
+    this.http.delete(`${environment.authURL}/${userId}`);
     localStorage.removeItem('userId');
     localStorage.setItem('isAuthenticated', 'false');
     this.router.navigate(['/auth']);
   }
-  private createQuery(username: string, password?: string, email?: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, {
+  private createQuery(
+    username: string,
+    password?: string,
+    email?: string
+  ): Observable<any> {
+    return this.http.post(`${environment.authURL}`, {
       username,
       email,
       password,
     });
   }
   private loginQuery(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, {
+    return this.http.post(`${environment.authURL}/login`, {
       username,
       password,
     });
@@ -145,8 +149,8 @@ export class AuthService {
     username: string,
     password: string,
     passwordCheck: string | null,
-    form: FormGroup, 
-    authMode: string
+    form: FormGroup,
+    authState: string
   ): boolean {
     const result = this.users.find((user) => user.username === username);
 
@@ -155,14 +159,12 @@ export class AuthService {
       return false;
     }
     if (passwordCheck) {
-       if (password !== passwordCheck) {
-        console.error(
-          'The password and password verification do not match.'
-        );
+      if (password !== passwordCheck) {
+        console.error('The password and password verification do not match.');
         return false;
       }
     }
-    if (authMode === 'sign-up') { 
+    if (authState === 'sign-up') {
       if (result) {
         console.error('This user already exists.');
         return false;
@@ -187,5 +189,24 @@ export class AuthService {
   }
   public loginOAuth(): void {
     this.oauthService.initLoginFlow(undefined, { prompt: 'select_account' });
+  }
+  public handleGoogleLogin(form: FormGroup) {
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (
+        this.oauthService.hasValidIdToken() &&
+        this.oauthService.hasValidAccessToken()
+      ) {
+        const claims: any = this.oauthService.getIdentityClaims();
+        console.log('Usuario autenticado:', claims);
+        console.log(claims.name);
+        let randomNum = Math.floor(Math.random() * 10000);
+        let username =
+          claims.name.toLowerCase().split(' ').join('') + randomNum;
+        form.get('username')?.setValue(username);
+        console.log(claims.name.toLowerCase().split(' ').join(''));
+        this.loginOrRegisterGoogle(username, claims.email);
+        console.log();
+      }
+    });
   }
 }

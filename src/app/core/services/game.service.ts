@@ -1,8 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { ChangeDetectorRef, inject, Injectable } from '@angular/core';
 import { WebsocketsService } from './websockets.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { StatsService } from './stats.service';
-import { Exercise } from '../interfaces/exercise';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +9,7 @@ import { Exercise } from '../interfaces/exercise';
 export class GameService {
   private readonly wsService = inject(WebsocketsService);
   private readonly statsService = inject(StatsService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   public exercises: any[] = [];
   public currentExercise!: any;
@@ -84,16 +84,30 @@ export class GameService {
     }
     this.correctAnswers++;
     this.currentStreak++;
-    if (this.currentStreak > this.maxStreak) this.maxStreak = this.currentStreak;
+    if (this.currentStreak > this.maxStreak)
+      this.maxStreak = this.currentStreak;
     this.operationRecorded = false;
     if (this.exercises.length === 0) {
       this.playSound('./sounds/sucess.mp3');
+      this.showFeedback = true;
       return;
     }
 
     if (!isNumberInput) solution.target.value = '';
     this.playSound('./sounds/pop.mp3');
     this.currentExercise = this.exercises.pop();
+  }
+  public checkDivision(quotient: number, remainder: number): void {
+    this.checkSolution(quotient, this.currentExercise.operationType);
+
+    if (remainder === this.currentExercise.remainder) {
+      quotient = null as any;
+      remainder = null as any;
+      if (this.exercises.length === 0) {
+        this.showFeedback = true;
+      }
+      this.cdr.detectChanges();
+    }
   }
   private startTimer() {
     const totalTime = this.getInitialTime();
@@ -113,5 +127,10 @@ export class GameService {
   private playSound(audioPath: string) {
     const audio = new Audio(audioPath);
     audio.play().catch();
+  }
+  public get accuracyPercentage(): number {
+    const total = this.totalExercises;
+    if (total === 0) return 0;
+    return Math.round((this.correctAnswers / total) * 100);
   }
 }

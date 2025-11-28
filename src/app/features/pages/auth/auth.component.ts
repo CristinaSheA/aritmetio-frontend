@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import {
   FormBuilder,
@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../../../core/environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -18,46 +18,35 @@ import { OAuthService } from 'angular-oauth2-oidc';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AuthComponent { 
+export class AuthComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
-  private readonly oauthService = inject(OAuthService);
 
   public form: FormGroup = this.fb!.group({
     username: ['', [Validators.minLength(3), Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+    password: [
+      '',
+      [Validators.required, Validators.minLength(8), Validators.maxLength(20)],
+    ],
     passwordCheck: [''],
   });
-  public authMode = 'sign-up';
+  public authState = 'sign-up';
 
   ngOnInit() {
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      if (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken()) {
-        const claims: any = this.oauthService.getIdentityClaims();
-        console.log("Usuario autenticado:", claims);
-        console.log(claims.name);
-        let randomNum = Math.floor(Math.random() * 10000);
-        let username = claims.name.toLowerCase().split(" ").join("") + randomNum;
-        this.form.get('username')?.setValue(username);
-        console.log(claims.name.toLowerCase().split(" ").join(""));
-        this.authService.loginOrRegisterGoogle(username, claims.email);
-        console.log();
-      }
-    });
+    this.authService.handleGoogleLogin(this.form);
   }
 
-  public changeAuthMode(mode: string) {
-    if (mode === 'log-in') this.authMode = 'log-in'; 
-    else this.authMode = 'sign-up';
+  public setAuthState(state: string) {
+    if (state === 'log-in') this.authState = 'log-in';
+    else this.authState = 'sign-up';
   }
   public createUser() {
-    this.authService!.createUser(this.form, this.authMode);
+    this.authService!.createUser(this.form, this.authState);
   }
   public loginUser() {
-    this.authService!.loginUser(this.form, this.authMode);
+    this.authService!.loginUser(this.form, this.authState);
   }
-  public loginOAuth() {
-    window.location.href = 'http://localhost:3000/auth/google';
+  public loginWithGoogle() {
+    window.location.href = `${environment.authURL}/google`;
   }
 }
- 

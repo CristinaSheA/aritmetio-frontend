@@ -3,5 +3,4 @@ export interface Exercise {
   num2: number,
   result: number,
   operationType: 'ADDITION' | 'SUBTRACTION' | 'MULTIPLICATION' | 'DIVISION',
-  // remainder?: number
 }

@@ -33,12 +33,12 @@
     <div class="column">
       <div class="dividendo">
 
-        @for (digit of getDigits(currentExercise.num1); track $index) {
+        @for (digit of splitDigits(currentExercise.num1); track $index) {
         <span>{{ digit }}</span>
         }
       </div>
       <div class="division-inputs">
-        <input type="number" [(ngModel)]="solucionResto" (keydown.enter)="checkSolution(solucionResto)"/>
+        <input type="number" [(ngModel)]="reminder" (keydown.enter)="checkSolution(reminder)"/>
       </div>
       <label>/</label>
     </div>
@@ -47,8 +47,8 @@
         <span>{{ currentExercise.num2 }}</span>
       </div>
       <div class="divisor-input">
-        <input type="number" (keydown.enter)="checkSolution(solucionCociente)
-        " [(ngModel)]="solucionCociente"/>
+        <input type="number" (keydown.enter)="checkSolution(quotient)
+        " [(ngModel)]="quotient"/>
       </div>
     </div>
   </div>
